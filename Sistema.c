@@ -335,7 +335,7 @@ int main() {
                 break;
 
             default:
-                printf("\nOpcao invalida!\n");
+                printf("\nOpcao invalida!!!\n");
 
             }
                 } while (opcao != 3);
