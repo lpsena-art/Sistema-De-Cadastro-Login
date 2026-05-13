@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-typedef struct Administrador{
+ typedef struct Administrador{
 
     char nome[50];
     int dia;
@@ -13,12 +13,11 @@ typedef struct Administrador{
     double salario;
     int senha;
 
-    struct Administrador *Adm[100];
+    struct Administrador * Adm;
 
     } Administrador;
 
-typedef struct Funcionario{
-
+ typedef struct Funcionario{
     char nome[50];
     int dia;
     int mes;
@@ -27,16 +26,16 @@ typedef struct Funcionario{
     double salario;
     int senha;
 
-    struct Funcionario *Func[100];
+    struct Funcionario * Func;
 
     } Funcionario;
 
-int main() {
+ int main() {
 
     system ("cls");
 
-    Administrador Adm;
-    Funcionario Func;
+    Administrador *listaAdm = NULL;
+    Funcionario *listaFunc = NULL;
     int opcao;
     int cadastro_adm = 0;           //Declaração de variáveis
     int cadastro_func = 0;
@@ -44,7 +43,7 @@ int main() {
     char cargo[20]; 
     char busca_nome[50];
     size_t i;
-    int valido = 1;
+    int valido;
 
     do{
 
@@ -66,8 +65,9 @@ int main() {
 
         if(strcmp(cargo, "Administrador") == 0 || strcmp(cargo, "administrador") == 0) {
 
-
-            Adm.salario = 5000;
+            Administrador *novoAdm = malloc(sizeof(Administrador));
+            novoAdm -> salario = 5000;
+            novoAdm -> salario = NULL;
 
             printf("Ola Administrador. Seja bem-vindo!!!\n");
 
@@ -76,11 +76,11 @@ int main() {
                 valido = 1;
 
                printf("\nDigite o seu nome: ");
-               scanf(" %49[^\n]", Adm.nome);
+               scanf(" %49[^\n]", novoAdm->nome);
 
-                for(i = 0; i < strlen(Adm.nome); i++){
+                for(i = 0; i < strlen(novoAdm->nome); i++){
     
-                    if(!isalpha(Adm.nome[i]) && Adm.nome[i] != ' ') {
+                    if(!isalpha(novoAdm->nome[i]) && novoAdm->nome[i] != ' ') {
     
                         valido = 0;
     
@@ -101,46 +101,46 @@ int main() {
             do {
 
                 printf("\nDia: ");
-                scanf("%d", &Adm.dia);
+                scanf("%d", &novoAdm->dia);
 
-                if(Adm.dia < 1 || Adm.dia > 31){
+                if(novoAdm->dia < 1 || novoAdm->dia > 31){
 
                     printf("\nDia invalido, digite entre (01-31)!\n");
                 }     
-            } while (Adm.dia < 1 || Adm.dia > 31);
+            } while (novoAdm->dia < 1 || novoAdm->dia > 31);
 
             do {
 
                 printf("\nMes: ");
-                scanf("%d", &Adm.mes);
+                scanf("%d", &novoAdm->mes);
 
-                if (Adm.mes < 1 || Adm.mes > 12){
+                if (novoAdm->mes < 1 || novoAdm->mes > 12){
 
                     printf("\nMes invalido, digite entre (01-12)!\n");
                 }
-            } while (Adm.mes < 1 || Adm.mes > 12);
+            } while (novoAdm->mes < 1 || novoAdm->mes > 12);
 
             do {
                 
                 printf("\nAno: ");
-                scanf("%d", &Adm.ano);
+                scanf("%d", &novoAdm->ano);
 
-                if(Adm.ano < 1900 || Adm.ano > 2007) {
+                if(novoAdm->ano < 1900 || novoAdm->ano > 2007) {
 
                     printf("\nAno invalido, digite entre (1900 - 2007)!\n");
                 }   
-            } while (Adm.ano < 1900 || Adm.ano > 2007);
+            } while (novoAdm->ano < 1900 || novoAdm->ano > 2007);
 
             do{
 
                 valido = 1;
 
                 printf("\nCargo na empresa: ");
-                scanf(" %49[^\n]", Adm.cargo);
+                scanf(" %49[^\n]", novoAdm->cargo);
 
-                for(i = 0; i < strlen(Adm.cargo); i++) {
+                for(i = 0; i < strlen(novoAdm->cargo); i++) {
 
-                    if(!isalpha(Adm.cargo[i]) && Adm.cargo[i] != ' ') {
+                    if(!isalpha(novoAdm->cargo[i]) && novoAdm->cargo[i] != ' ') {
 
                         valido = 0;
 
@@ -155,15 +155,19 @@ int main() {
             }while(!valido);
 
             printf("\nCrie uma senha numerica para login: ");
-            scanf("%d", &Adm.senha);
+            scanf("%d", &novoAdm->senha);
+
+            novoAdm -> proximo = listaAdm;
+            listaAdm = novoAdm;
 
             printf("\nCadastro realizado!!!\n");
 
-            cadastro_adm = 1;
-
             } else if(strcmp(cargo, "Funcionario") == 0 || strcmp(cargo, "funcionario") == 0) {
 
-                Func.salario = 3500;
+                Funcionario *novoFunc = malloc(sizeof(Funcionario))
+                novoFunc -> salario = 3500;
+                novoFunc -> proximo = NULL;
+
                     printf("Ola funcionario. Seja bem-vindo!!!\n");
 
                     do {
@@ -171,11 +175,11 @@ int main() {
                         valido = 1;
 
                         printf("\nDigite o seu nome: ");
-                        scanf(" %49[^\n]", Func.nome);
+                        scanf(" %49[^\n]", novoFunc->nome);
 
-                        for(i = 0; i < strlen(Func.nome); i++) {
+                        for(i = 0; i < strlen(novoFunc->nome); i++) {
 
-                            if(!isalpha(Func.nome[i]) && Func.nome[i] != ' ') {
+                            if(!isalpha(novoFunc->nome[i]) && novoFunc->nome[i] != ' ') {
 
                                 valido = 0;
 
@@ -195,46 +199,46 @@ int main() {
                     do {
 
                         printf("\nDia: ");
-                        scanf("%d", &Func.dia);
+                        scanf("%d", &novoFunc->dia);
 
-                        if(Func.dia < 1 || Func.dia > 12){
+                        if(novoFunc->dia < 1 || novoFunc->dia > 31){
 
                             printf("\nDia invalido, digite entre (01-31)!\n");
                         }
-                    } while (Func.dia < 1 || Func.dia > 31);
+                    } while (novoFunc->dia < 1 || novoFunc->dia > 31);
 
                     do {
 
                         printf("\nMes: ");
-                        scanf("%d", &Func.mes);
+                        scanf("%d", &novoFunc->mes);
 
-                        if(Func.mes < 1 || Func.mes > 12) {
+                        if(novoFunc->mes < 1 || novoFunc->mes > 12) {
 
                             printf("\nMes invalido, digite entre (01-12)!\n");
                         }   
-                    } while (Func.mes < 1 || Func.mes > 12);
+                    } while (novoFunc->mes < 1 || novoFunc->mes > 12);
 
                     do{
 
                         printf("\nAno: ");
-                        scanf("%d", &Func.ano);
+                        scanf("%d", &novoFunc->ano);
 
-                        if(Func.ano < 1900 || Func.ano > 2007) {
+                        if(novoFunc->ano < 1900 || novoFunc->ano > 2007) {
 
                             printf("\nAno invalido, digite entre (1900-2007)!\n");
                         }
-                    } while (Func.ano < 1900 || Func.ano > 2007);
+                    } while (novoFunc->ano < 1900 || novoFunc->ano > 2007);
 
                     do {
 
                         valido = 1;
 
                         printf("\nCargo na empresa:");
-                        scanf(" %49[^\n]", Func.cargo);
+                        scanf(" %49[^\n]", novoFunc->cargo);
 
-                        for(i = 0; i < strlen(Func.cargo); i++){
+                        for(i = 0; i < strlen(novoFunc->cargo); i++){
 
-                            if(!isalpha(Func.cargo[i]) && Func.cargo[i] != ' ') {
+                            if(!isalpha(novoFunc->cargo[i]) && novoFunc->cargo[i] != ' ') {
 
                                 valido = 0;
 
@@ -249,7 +253,7 @@ int main() {
                     } while(!valido);
 
                     printf("\nCrie uma numerica senha para login: ");
-                    scanf("%d", &Func.senha);
+                    scanf("%d", &novoFunc->senha);
 
                     printf("\nCadastro realizado!!!");
 
@@ -267,7 +271,7 @@ int main() {
 
                     printf("\n========== Login ==========\n");                                       //LOGIN
                     printf("\nDigite o seu nome cadastrado: ");
-                    scanf("%49[^\n]", busca_nome);
+                    scanf(" %49[^\n]", busca_nome);
 
                     for(i = 0; i < strlen(busca_nome); i++){
 
@@ -285,25 +289,31 @@ int main() {
                     }
                 } while(!valido);
 
-                if(cadastro_adm == 1 && strcmp(busca_nome, Adm.nome) == 0) {
+                Administrador *AtualAdm = listaAdm;
 
-                    printf("\nSenha: ");                                                       //Busca senha adm
-                    scanf("%d", &busca_senha);
-
-                if(busca_senha == Adm.senha){
-
-                    printf("\nAcesso validado!!\n");
-
-                    printf("\nAdministrador(a): %s \n", Adm.nome);
-                    printf("\nNascido(a) em %d/%d/%d \n", Adm.dia, Adm.mes, Adm.ano);
-                    printf("Cargo: %s", Adm.cargo);
-                    printf("\nSalario: %.2f R$\n", Adm.salario);
-
-                }else {
+                while (AtualAdm != NULL){
                     
-                    printf("\nSenha invalida!\n");
-                }
-
+                    if(cadastro_adm == 1 && strcmp(busca_nome, Adm.nome) == 0) {
+                        
+                        printf("\nSenha: ");                                                       //Busca senha adm
+                        scanf("%d", &busca_senha);
+                        
+                        if(busca_senha == AtualAdm->senha){
+                            
+                            printf("\nAcesso validado!!\n");
+                            
+                            printf("\nAdministrador(a): %s \n", Adm.nome);
+                            printf("\nNascido(a) em %d/%d/%d \n", Adm.dia, Adm.mes, Adm.ano);
+                            printf("Cargo: %s", Adm.cargo);
+                            printf("\nSalario: %.2f R$\n", Adm.salario);
+                            
+                        }else {
+                            
+                            printf("\nSenha invalida!\n");
+                        }
+                        
+                                        }
+                        
              } else if(cadastro_func == 1 && strcmp(busca_nome, Func.nome)==0){
     
                     printf("\nSenha: ");                                                         //Busca senha func
@@ -322,13 +332,25 @@ int main() {
 
                     printf("\nSenha invalida!\n");
                 }
-            } else {
-
-                printf("\nNome invalido ou usuario nao cadastrado!\n");
-            }
              break;
 
-             case 3:
+             AtualFunc = AtualFunc -> Func;
+
+             case 3:                         //Libera memória
+
+                while (ListaAdm != NULL) {
+
+                    Administrador *temp = ListaAdm;
+                    ListaAdm = ListaAdm -> Adm;
+                    free(temp);
+                }
+
+                while (ListaFunc != NULL) {
+                    
+                    Funcionario *temp = ListaFunc;
+                    ListaFunc = ListaFunc -> Func;
+                    free(temp);
+                }
 
                 printf("\nSaindo...\n");
 
