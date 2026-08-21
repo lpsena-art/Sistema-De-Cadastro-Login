@@ -326,20 +326,23 @@ int main() {
                     if (!valido) printf("Nome invalido! Use apenas letras.\n");
                 } while (!valido);
 
-                // Percorre lista de administradores
+               
+                int encontrou_adm = 0;
                 Administrador *atual_adm = listaAdm;
                 while (atual_adm != NULL) {
                     if (strcmp(busca_nome, atual_adm->nome) == 0) {
+                        encontrou_adm = 1;
                         printf("Senha: ");
-                        scanf("%50s", busca_senha);    // CORRIGIDO: char[]
+                        scanf("%50s", busca_senha);  
                         limpar_buffer();
 
-                        if (strcmp(busca_senha, atual_adm->senha) == 0) {  // CORRIGIDO: strcmp
+                        if (strcmp(busca_senha, atual_adm->senha) == 0) {  
                             printf("\nAcesso validado!!\n");
                             printf("Administrador(a): %s\n", atual_adm->nome);
                             printf("Nascido(a) em %02d/%02d/%d\n", atual_adm->dia, atual_adm->mes, atual_adm->ano);
                             printf("Cargo: %s\n", atual_adm->cargo);
                             printf("Salario: R$ %.2f\n", atual_adm->salario);
+
                         } else {
                             printf("\nSenha invalida!\n");
                         }
@@ -349,14 +352,17 @@ int main() {
                 }
 
                 // Percorre lista de funcionarios
+                int encontrou_func = 0;
                 Funcionario *atual_func = listaFunc;
+                if (!encontrou_adm) {
                 while (atual_func != NULL) {
                     if (strcmp(busca_nome, atual_func->nome) == 0) {
+                        encontrou_func = 1;
                         printf("Senha: ");
-                        scanf("%50s", busca_senha);    // CORRIGIDO: char[]
+                        scanf("%50s", busca_senha);   
                         limpar_buffer();
 
-                        if (strcmp(busca_senha, atual_func->senha) == 0) {  // CORRIGIDO: strcmp
+                        if (strcmp(busca_senha, atual_func->senha) == 0) {  
                             printf("\nAcesso validado!!\n");
                             printf("Funcionario(a): %s\n", atual_func->nome);
                             printf("Nascido(a) em %02d/%02d/%d\n", atual_func->dia, atual_func->mes, atual_func->ano);
@@ -369,8 +375,9 @@ int main() {
                     }
                     atual_func = atual_func->Func;
                 }
+                }
 
-                if (atual_adm == NULL && atual_func == NULL) {
+                if (!encontrou_adm && !encontrou_func) {
                     printf("\nUsuario nao encontrado!\n");
                 }
                 break;
